@@ -1,0 +1,50 @@
+---
+title: "p8105_hw4_mh4588 dashboard"
+author: "Maggie Hsu"
+date: "`r Sys.Date()`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(plotly)
+library(p8105.datasets)
+
+data(rest_inspec)
+rest_inspect <- force(rest_inspec)
+```
+
+```
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+#Boxplot comparing restaurant rating distributions by borough
+
+  boxplot <- rest_inspec |> #distribution of scores by borough
+  mutate(boro = fct_reorder(boro, score)) |> 
+  ggplot(aes(x = boro, y = score, fill = boro)) +
+  geom_boxplot()
+  
+  ggplotly(boxplot)
+```
+
+### Chart C
+
+```{r}
+
+```
