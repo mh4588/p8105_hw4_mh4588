@@ -12,9 +12,9 @@ output:
 library(flexdashboard)
 library(plotly)
 library(p8105.datasets)
+library(tidyverse)
 
 data(rest_inspec)
-rest_inspect <- force(rest_inspec)
 ```
 
 ```
@@ -34,17 +34,20 @@ Column {data-width=350}
 
 ```{r}
 #Boxplot comparing restaurant rating distributions by borough
-
-  boxplot <- rest_inspec |> #distribution of scores by borough
+rest_inspec |> #distribution of scores by borough
+  filter(is.na(boro)==FALSE, boro != "Missing") |> #Remove NAs and  observations with missing borough values
   mutate(boro = fct_reorder(boro, score)) |> 
-  ggplot(aes(x = boro, y = score, fill = boro)) +
-  geom_boxplot()
-  
-  ggplotly(boxplot)
+    plot_ly(y = ~score, color = ~boro, type = "box", colors = "viridis")
+    
 ```
 
 ### Chart C
 
 ```{r}
+#want to display number of critical warnings vs. number of non-critical warnings for restaurants of each grade
+#also how to relabel legend and is this readable
+rest_inspec |>
+plot_ly(x = ~grade, y = ~as.factor(critical_flag), type = 'bar', name = 'Restaurant Grades vs.Warning Types', color=~critical_flag) |>
+  layout(yaxis = list(title = 'Count'), barmode = 'group')
 
 ```
